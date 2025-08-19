@@ -32,8 +32,9 @@ const Navbar = () => {
     // 2. Ganti transition-all dengan transition-transform.
     <header 
       className={`bg-gradient-to-r from-blue-100 via-indigo-50 to-purple-100 shadow-md text-gray-800 fixed w-full z-50 transition-transform duration-300 ${visible ? 'translate-y-0' : '-translate-y-full'}`}
+      style={{ height: "70px" }}
     >
-      <nav className="container mx-auto px-6 py-1 flex justify-between items-center">
+      <nav className="container mx-auto px-6 h-full flex justify-between items-center">
         
         <div>
           <Link to="/" className="cursor-pointer">
@@ -43,7 +44,7 @@ const Navbar = () => {
 
         <ul className="flex items-center space-x-6">
            <li><Link to="/" className="text-gray-700 hover:text-orange-500 font-medium">Home</Link></li>
-          <li><a href="#" className="text-gray-700 hover:text-orange-500 font-medium">Lorry</a></li>
+          <li><Link to="/find-lorry" className="text-gray-700 hover:text-orange-500 font-medium">Lorry</Link></li>
           <li><a href="#" className="text-gray-700 hover:text-orange-500 font-medium">House Rental</a></li>
           <li><a href="#" className="text-gray-700 hover:text-orange-500 font-medium">About Us</a></li>
         </ul>

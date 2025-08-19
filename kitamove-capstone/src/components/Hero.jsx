@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 // Ini swiper gambar
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -8,7 +9,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import 'swiper/css/autoplay';
-
+ 
 // Ini component swiper
 import { Pagination, Navigation, Autoplay } from 'swiper/modules';
 
@@ -45,9 +46,9 @@ const Hero = () => {
                                 Moving is just a breeze away...
                             </p>
                             <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-                                <a href="#" className="bg-brand-orange text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-orange-600 transition-all transform hover:scale-105">
+                                <Link to="/find-lorry" className="bg-brand-orange text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-orange-600 transition-all transform hover:scale-105">
                                     Find my Lorry
-                                </a>
+                                </Link>
                                 <a href="#" className="bg-white text-gray-700 font-bold py-3 px-8 rounded-full shadow-lg hover:bg-gray-100 transition-all transform hover:scale-105">
                                     Rent A House Now
                                 </a>
