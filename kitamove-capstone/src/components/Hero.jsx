@@ -49,9 +49,9 @@ const Hero = () => {
                                 <Link to="/find-lorry" className="bg-brand-orange text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-orange-600 transition-all transform hover:scale-105">
                                     Find my Lorry
                                 </Link>
-                                <a href="#" className="bg-white text-gray-700 font-bold py-3 px-8 rounded-full shadow-lg hover:bg-gray-100 transition-all transform hover:scale-105">
+                                <Link to="/houserental" className="bg-white text-gray-700 font-bold py-3 px-8 rounded-full shadow-lg hover:bg-gray-100 transition-all transform hover:scale-105">
                                     Rent A House Now
-                                </a>
+                                </Link>
                             </div>
                         </div>
 
