@@ -1,3 +1,11 @@
+        <div className="flex justify-center mb-8">
+          <button
+            className="bg-white text-gray-700 font-semibold px-8 py-4 rounded-full shadow hover:bg-gray-100 transition"
+            onClick={() => navigate('/houserental')}
+          >
+            Rent A House Now
+          </button>
+        </div>
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from '../components/Navbar';
@@ -187,7 +195,7 @@ const FindLorry = () => {
        
         <div className="flex flex-col lg:flex-row gap-6 max-w-7xl mx-auto">
           
-          <div className="bg-white p-6 rounded-2xl shadow-lg lg:w-1/2 order-2 lg:order-1 z-10">
+          <div className="bg-white p-6 rounded-2xl shadow-lg h-[600px] flex-1 order-2 lg:order-1 z-10">
             <h3 className="text-xl font-semibold mb-6 flex items-center gap-2">
               📍 Moving Locations
             </h3>
@@ -308,12 +316,12 @@ const FindLorry = () => {
           </div>
 
           {/* Map Container */}
-          <div className="lg:w-1/2 order-1 lg:order-2">
+          <div className="bg-white rounded-2xl shadow-lg h-[600px] flex-1 order-1 lg:order-2 flex items-center justify-center">
             <MapContainer
               center={[3.139, 101.6869]}
               zoom={7}
-              style={{ height: "550px", width: "100%" }}
-              className="rounded-lg shadow-lg mt-6"
+              style={{ height: "100%", width: "100%", borderRadius: '1rem' }}
+              className="h-full w-full"
             >
               <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
