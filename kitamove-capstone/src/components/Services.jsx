@@ -28,7 +28,7 @@ const Services = () => {
                             </div>
                             <h3 className="text-2xl font-bold text-gray-800 mb-3">House Moving</h3>
                             <p className="text-gray-600 mb-6">Complete house moving packages to make your relocation easy and stress-free.</p>
-                            <Link to="/services/moving" className="font-bold text-brand-orange hover:text-brand-orange-dark transition-colors mt-auto flex items-center">
+                            <Link to="/find-lorry" className="font-bold text-brand-orange hover:text-brand-orange-dark transition-colors mt-auto flex items-center">
                                 Learn More <span className="ml-1">→</span>
                             </Link>
                         </div>
@@ -46,7 +46,7 @@ const Services = () => {
                             </div>
                             <h3 className="text-2xl font-bold text-gray-800 mb-3">Lorry Rental</h3>
                             <p className="text-gray-600 mb-6">Rent a lorry with a driver for your moving needs. Various sizes available.</p>
-                            <Link to="/services/lorry" className="font-bold text-brand-orange hover:text-brand-orange-dark transition-colors mt-auto flex items-center">
+                            <Link to="/find-lorry" className="font-bold text-brand-orange hover:text-brand-orange-dark transition-colors mt-auto flex items-center">
                                 Learn More <span className="ml-1">→</span>
                             </Link>
                         </div>
@@ -64,7 +64,7 @@ const Services = () => {
                             </div>
                             <h3 className="text-2xl font-bold text-gray-800 mb-3">House Rental Search</h3>
                             <p className="text-gray-600 mb-6">Find your next home in Kota Kinabalu. Search listings for houses and apartments.</p>
-                            <Link to="/services/rental" className="font-bold text-brand-orange hover:text-brand-orange-dark transition-colors mt-auto flex items-center">
+                            <Link to="/houserental" className="font-bold text-brand-orange hover:text-brand-orange-dark transition-colors mt-auto flex items-center">
                                 Learn More <span className="ml-1">→</span>
                             </Link>
                         </div>

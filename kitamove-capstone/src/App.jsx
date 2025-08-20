@@ -1,12 +1,17 @@
-import PropertyDetails from './pages/PropertyDetails';
 import { Routes, Route, useLocation } from 'react-router-dom';
+import React from 'react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import Home from './pages/Home';
-import FindLorry from './pages/FindLorry';
-import UploadPhotos from './pages/UploadPhotos';
-import BookingDetails from './pages/BookingDetails';
-import HouseRental from './pages/HouseRental';
+
+const Home = React.lazy(() => import('./pages/Home'));
+const FindLorry = React.lazy(() => import('./pages/FindLorry'));
+const UploadPhotos = React.lazy(() => import('./pages/UploadPhotos'));
+const BookingDetails = React.lazy(() => import('./pages/BookingDetails'));
+const HouseRental = React.lazy(() => import('./pages/HouseRental'));
+const PropertyDetails = React.lazy(() => import('./pages/PropertyDetails'));
+const NotFound = () => (
+  <div className="min-h-[60vh] flex items-center justify-center text-gray-600">Page not found</div>
+);
 
 function App() {
   const location = useLocation();
@@ -20,14 +25,17 @@ function App() {
       {showNavbar && <Navbar />}
       
       <main>
-        <Routes>
-          <Route path="/property/:id" element={<PropertyDetails />} />
-          <Route path="/" element={<Home />} />
-          <Route path="/find-lorry" element={<FindLorry />} />
-          <Route path="/upload-photos" element={<UploadPhotos />} />
-          <Route path="/booking-details" element={<BookingDetails />} />
-          <Route path="/houserental" element={<HouseRental />} />
-        </Routes>
+        <React.Suspense fallback={<div className="p-8 text-center text-gray-500">Loading...</div>}>
+          <Routes>
+            <Route path="/property/:id" element={<PropertyDetails />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/find-lorry" element={<FindLorry />} />
+            <Route path="/upload-photos" element={<UploadPhotos />} />
+            <Route path="/booking-details" element={<BookingDetails />} />
+            <Route path="/houserental" element={<HouseRental />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </React.Suspense>
       </main>
       
       {showFooter && <Footer />}
