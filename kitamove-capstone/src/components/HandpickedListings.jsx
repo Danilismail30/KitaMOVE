@@ -72,7 +72,7 @@ const HandpickedListings = () => {
       <div className="container mx-auto px-6 max-w-6xl">
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-3xl font-bold text-gray-800">Handpicked For You</h2>
-          <Link to="/listings" className="text-brand-orange hover:text-brand-orange-dark text-sm font-medium flex items-center">
+          <Link to="/houserental" className="text-brand-orange hover:text-brand-orange-dark text-sm font-medium flex items-center">
             View All Properties
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" viewBox="0 0 20 20" fill="currentColor">
               <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
@@ -168,7 +168,7 @@ const HandpickedListings = () => {
         </div>
         
         <div className="mt-12 text-center">
-          <Link to="/listings" className="inline-flex items-center justify-center bg-white border-2 border-brand-orange text-brand-orange hover:bg-brand-orange hover:text-white transition-all duration-300 font-medium py-2.5 px-8 rounded-full shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+          <Link to="/houserental" className="inline-flex items-center justify-center bg-white border-2 border-brand-orange text-brand-orange hover:bg-brand-orange hover:text-white transition-all duration-300 font-medium py-2.5 px-8 rounded-full shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
             View More Properties
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />

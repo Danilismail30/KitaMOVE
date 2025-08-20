@@ -1,11 +1,3 @@
-        <div className="flex justify-center mb-8">
-          <button
-            className="bg-white text-gray-700 font-semibold px-8 py-4 rounded-full shadow hover:bg-gray-100 transition"
-            onClick={() => navigate('/houserental')}
-          >
-            Rent A House Now
-          </button>
-        </div>
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from '../components/Navbar';
@@ -20,6 +12,7 @@ import {
 import L from 'leaflet';
 import "leaflet/dist/leaflet.css";
 
+const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:5000';
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -40,6 +33,7 @@ const FindLorry = () => {
   const [distance, setDistance] = useState(null);
   const [date, setDate] = useState("");
   const [calculatingRoute, setCalculatingRoute] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const typingTimeoutRef = useRef(null);
   const lastQueryRef = useRef("");
@@ -58,7 +52,7 @@ const FindLorry = () => {
       lastQueryRef.current = query; 
 
       const res = await fetch(
-        `https://nominatim.openstreetmap.org/search?format=json&countrycodes=MY&limit=5&q=${query}`
+        `https://nominatim.openstreetmap.org/search?format=jsonv2&countrycodes=MY&limit=5&dedupe=1&q=${encodeURIComponent(query)}`
       );
       const data = await res.json();
 
@@ -94,6 +88,7 @@ const FindLorry = () => {
     }
 
     setCalculatingRoute(true);
+    setErrorMessage("");
 
     try {
       console.log("Calculating route with:", {
@@ -102,7 +97,7 @@ const FindLorry = () => {
         date: date
       });
       
-      const res = await fetch('http://localhost:5000/api/route', {
+      const res = await fetch(`${API_BASE}/api/route`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -134,7 +129,7 @@ const FindLorry = () => {
       console.log("Route calculated successfully:", coords.length, "points,", km, "km");
     } catch (err) {
       console.error("Route error:", err);
-      alert("Could not fetch route. Please check the console for more details.");
+      setErrorMessage(err?.message || "Could not fetch route. Please try again.");
     } finally {
       setCalculatingRoute(false);
     }
@@ -169,7 +164,7 @@ const FindLorry = () => {
       <div className="h-[70px]">
         <Navbar />
       </div>
-      <div className="container mx-auto p-4 pt-24">
+      <div className="mx-auto px-6 pt-24 max-w-[1800px]">
         <header className="text-center mb-6 mt-8">
           <h2 className="text-2xl font-bold text-gray-800">Lorry Rental Service</h2>
           <p className="text-gray-600">Find the best route for your move</p>
@@ -193,14 +188,14 @@ const FindLorry = () => {
         </div>
 
        
-        <div className="flex flex-col lg:flex-row gap-6 max-w-7xl mx-auto">
+        <div className="flex flex-col lg:flex-row items-stretch gap-8 max-w-[1700px] w-full mx-auto">
           
-          <div className="bg-white p-6 rounded-2xl shadow-lg h-[600px] flex-1 order-2 lg:order-1 z-10">
+          <div className="bg-white p-8 rounded-2xl shadow-lg h-[800px] overflow-y-auto flex-1 z-10">
             <h3 className="text-xl font-semibold mb-6 flex items-center gap-2">
               📍 Moving Locations
             </h3>
             
-            <div className="mb-4">
+            <div className="mb-4 relative">
               <label htmlFor="from" className="block text-sm font-medium text-gray-700 mb-1">Moving From</label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -219,7 +214,7 @@ const FindLorry = () => {
                 />
               </div>
               {fromSuggestions.length > 0 && (
-                <ul className="mt-1 border border-gray-200 rounded-md bg-white shadow-sm z-30 absolute max-w-md w-full">
+                <ul className="mt-1 border border-gray-200 rounded-md bg-white shadow-sm z-30 absolute top-full left-0 right-0">
                   {fromSuggestions.map((place) => (
                     <li
                       key={place.place_id}
@@ -233,7 +228,7 @@ const FindLorry = () => {
               )}
             </div>
 
-            <div className="mb-4">
+            <div className="mb-4 relative">
               <label htmlFor="to" className="block text-sm font-medium text-gray-700 mb-1">Moving To</label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -252,7 +247,7 @@ const FindLorry = () => {
                 />
               </div>
               {toSuggestions.length > 0 && (
-                <ul className="mt-1 border border-gray-200 rounded-md bg-white shadow-sm z-30 absolute max-w-md w-full">
+                <ul className="mt-1 border border-gray-200 rounded-md bg-white shadow-sm z-30 absolute top-full left-0 right-0">
                   {toSuggestions.map((place) => (
                     <li
                       key={place.place_id}
@@ -295,6 +290,11 @@ const FindLorry = () => {
               {!fromCoords || !toCoords || !date ? (
                 <p className="text-xs text-gray-500 mt-3">Please fill in all fields to continue</p>
               ) : null}
+              {errorMessage && (
+                <div className="mt-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded p-2">
+                  {errorMessage}
+                </div>
+              )}
             </div>
 
             {distance && (
@@ -316,35 +316,37 @@ const FindLorry = () => {
           </div>
 
           {/* Map Container */}
-          <div className="bg-white rounded-2xl shadow-lg h-[600px] flex-1 order-1 lg:order-2 flex items-center justify-center">
-            <MapContainer
-              center={[3.139, 101.6869]}
-              zoom={7}
-              style={{ height: "100%", width: "100%", borderRadius: '1rem' }}
-              className="h-full w-full"
-            >
-              <TileLayer
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                attribution="© OpenStreetMap contributors"
-              />
-              {route.length > 0 && (
-                <>
-                  <Polyline positions={route} color="#f59e42" weight={6} />
-                  <FitBounds coords={route} />
-                  {fromCoords && (
-                    <Marker position={fromCoords}>
-                      <Popup>From: {from}</Popup>
-                    </Marker>
-                  )}
-                  {toCoords && (
-                    <Marker position={toCoords}>
-                      <Popup>To: {to}</Popup>
-                    </Marker>
-                  )}
-                </>
-              )}
-            </MapContainer>
-          </div>
+          <div
+            className="bg-white rounded-2xl shadow-lg h-[800px] flex-1 flex items-center justify-center overflow-hidden"
+          >
+              <MapContainer
+                center={[3.139, 101.6869]}
+                zoom={7}
+                style={{ height: "100%", width: "100%", borderRadius: '1rem' }}
+                className="h-full w-full"
+              >
+                <TileLayer
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  attribution="© OpenStreetMap contributors"
+                />
+                {route.length > 0 && (
+                  <>
+                    <Polyline positions={route} color="#f59e42" weight={6} />
+                    <FitBounds coords={route} />
+                    {fromCoords && (
+                      <Marker position={fromCoords}>
+                        <Popup>From: {from}</Popup>
+                      </Marker>
+                    )}
+                    {toCoords && (
+                      <Marker position={toCoords}>
+                        <Popup>To: {to}</Popup>
+                      </Marker>
+                    )}
+                  </>
+                )}
+              </MapContainer>
+            </div>
         </div>
       </div>
     </div>

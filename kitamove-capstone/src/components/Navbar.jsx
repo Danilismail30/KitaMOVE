@@ -45,7 +45,7 @@ const Navbar = () => {
         <ul className="flex items-center space-x-6">
            <li><Link to="/" className="text-gray-700 hover:text-orange-500 font-medium">Home</Link></li>
           <li><Link to="/find-lorry" className="text-gray-700 hover:text-orange-500 font-medium">Lorry</Link></li>
-          <li><a href="#" className="text-gray-700 hover:text-orange-500 font-medium">House Rental</a></li>
+          <li><Link to="/houserental" className="text-gray-700 hover:text-orange-500 font-medium">House Rental</Link></li>
           <li><a href="#" className="text-gray-700 hover:text-orange-500 font-medium">About Us</a></li>
         </ul>
         <a href="#" className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-1.5 px-4 rounded-full transition duration-300 text-sm">
