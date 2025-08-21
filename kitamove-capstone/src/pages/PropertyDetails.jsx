@@ -327,7 +327,7 @@ export default function PropertyDetails() {
                   </div>
                 </div>
                 <div className="text-xs text-gray-500 leading-relaxed">
-                  <p className="mb-2">Malaysia common practice (guideline only): Security deposit = 2 months, Utilities deposit = 0.5 month, Advance rental = 1 month. Stamp duty per Stamps Act 1949: RM1 per RM250 of annual rent for ≤12 months; RM2 per RM250 for 1–3 years; RM3 per RM250 for >3 years.</p>
+                  <p className="mb-2">Malaysia common practice (guideline only): Security deposit = 2 months, Utilities deposit = 0.5 month, Advance rental = 1 month. Stamp duty per Stamps Act 1949: RM1 per RM250 of annual rent for ≤12 months; RM2 per RM250 for 1–3 years; RM3 per RM250 for 3 years.</p>
                   <p>Agent fee varies by agreement and who pays (landlord or tenant). Always verify with your agent and tenancy agreement.</p>
                 </div>
               </div>

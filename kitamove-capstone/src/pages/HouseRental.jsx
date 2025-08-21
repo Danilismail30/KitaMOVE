@@ -8,6 +8,7 @@ import {
 } from "react-leaflet";
 import L from 'leaflet';
 import "leaflet/dist/leaflet.css";
+import baseProperties from '../data/properties';
 
 // Basic Leaflet marker icon fix for bundlers
 delete L.Icon.Default.prototype._getIconUrl;
@@ -17,129 +18,68 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
 });
 
-// Demo data enriched with structured fields for filtering + map coords
-const properties = [
-  {
-    id: 1,
-    image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
-    title: "The Elysia Park Residence",
-    price: "RM 1,950 /mo",
-    details: "1 Bed | 1 Bath | 520 sqft | RM 3.75 psf",
-    description: "Jalan Persiaran Medini Utara 1, Medini, Iskandar Puteri (Nusajaya), Johor",
-    agent: "Yvonne Wong",
-    beds: 1,
-    baths: 1,
-    sqft: 520,
-    type: "Condo",
-    coords: [1.4267, 103.6298],
-    featured: true
-  },
-  {
-    id: 2,
-    image: "https://images.unsplash.com/photo-1460518451285-97b6aa326961?auto=format&fit=crop&w=800&q=80",
-    title: "Terrace house at Kota Kinabalu",
-    price: "RM 3,600 /mo",
-    details: "6 Beds | 6 Baths | 2,500 sqft | 4,000 sqft (land)",
-    description: "Taman Ganang Riverside, Jalan Sodomon, Kota Kinabalu, Sabah",
-    agent: "Zoey Liau",
-    beds: 6,
-    baths: 6,
-    sqft: 2500,
-    type: "Terrace",
-    coords: [5.9804, 116.0735],
-    featured: false
-  },
-  {
-    id: 3,
-    image: "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=800&q=80",
-    title: "Terrace house at Kota Kinabalu",
-    price: "RM 2,800 /mo",
-    details: "3 Beds | 2 Baths | 1,800 sqft | 2,000 sqft (land)",
-    description: "Lorong Seri Borneo 1, Kota Kinabalu, Sabah",
-    agent: "Zoey Liau",
-    beds: 3,
-    baths: 2,
-    sqft: 1800,
-    type: "Terrace",
-    coords: [5.95, 116.05],
-    featured: false
-  },
-  {
-    id: 4,
-    image: "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=800&q=80",
-    title: "Luxury Condo in KL City",
-    price: "RM 4,500 /mo",
-    details: "3 Beds | 2 Baths | 1,200 sqft | RM 3.75 psf",
-    description: "Jalan Ampang, Kuala Lumpur",
-    agent: "Farah Lee",
-    beds: 3,
-    baths: 2,
-    sqft: 1200,
-    type: "Condo",
-    coords: [3.139, 101.6869],
-    featured: true
-  },
-  {
-    id: 5,
-    image: "https://images.unsplash.com/photo-1523217582562-09d0def993a6?auto=format&fit=crop&w=800&q=80",
-    title: "Bungalow at Penang Hill",
-    price: "RM 7,200 /mo",
-    details: "5 Beds | 4 Baths | 3,500 sqft | RM 2.05 psf",
-    description: "Penang Hill, Penang",
-    agent: "Lim Wei",
-    beds: 5,
-    baths: 4,
-    sqft: 3500,
-    type: "Bungalow",
-    coords: [5.4141, 100.3288],
-    featured: false
-  },
-  {
-    id: 6,
-    image: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80",
-    title: "Studio Apartment in PJ",
-    price: "RM 1,200 /mo",
-    details: "1 Bed | 1 Bath | 400 sqft | RM 3.00 psf",
-    description: "Petaling Jaya, Selangor",
-    agent: "Aiman Hakim",
-    beds: 1,
-    baths: 1,
-    sqft: 400,
-    type: "Studio",
-    coords: [3.1073, 101.6067],
-    featured: false
-  },
-  {
-    id: 7,
-    image: "https://images.unsplash.com/photo-1472224371017-08207f84aaae?auto=format&fit=crop&w=800&q=80",
-    title: "Semi-D at Johor Bahru",
-    price: "RM 3,900 /mo",
-    details: "4 Beds | 3 Baths | 2,000 sqft | RM 1.95 psf",
-    description: "Taman Molek, Johor Bahru, Johor",
-    agent: "Siti Nur",
-    beds: 4,
-    baths: 3,
-    sqft: 2000,
-    type: "Semi-D",
-    coords: [1.4927, 103.7414],
-    featured: false
-  },
-  {
-    id: 8,
-    image: "https://images.unsplash.com/photo-1449844908441-8829872d2607?auto=format&fit=crop&w=800&q=80",
-    title: "Townhouse in Shah Alam",
-    price: "RM 2,500 /mo",
-    details: "3 Beds | 2 Baths | 1,100 sqft | RM 2.27 psf",
-    description: "Section 13, Shah Alam, Selangor",
-    agent: "Raja Azlan",
-    beds: 3,
-    baths: 2,
-    sqft: 1100,
-    type: "Townhouse",
-    coords: [3.0738, 101.5183],
-    featured: false
+// Create helper functions
+const extractBeds = (details) => {
+  const match = (details || '').match(/(\d+)\s*Bed/i);
+  return match ? Number(match[1]) : 0;
+};
+
+const extractBaths = (details) => {
+  const match = (details || '').match(/(\d+)\s*Bath/i);
+  return match ? Number(match[1]) : 0;
+};
+
+const extractSqft = (details) => {
+  const match = (details || '').match(/(\d+)\s*sqft/i);
+  return match ? Number(match[1]) : 0;
+};
+
+const extractType = (details) => {
+  // Logic to determine type from details/description
+  if (details.includes('Condo')) return 'condo';
+  if (details.includes('Terrace')) return 'terrace';
+  if (details.includes('Semi-D')) return 'semi-d';
+  if (details.includes('Bungalow')) return 'bungalow';
+  if (details.includes('Townhouse')) return 'townhouse';
+  if (details.includes('Studio')) return 'studio';
+  return 'other'; // Default if no specific type found
+};
+
+const getCoordinates = (description) => {
+  const match = description.match(/(\d+\.\d+), (\d+\.\d+)/);
+  if (match) {
+    return [Number(match[1]), Number(match[2])];
   }
-];
+  return [3.139, 101.6869]; // Default coordinates if not found
+};
+
+const PROPERTY_TYPES = {
+  CONDO: 'condo',
+  TERRACE: 'terrace',
+  SEMI_D: 'semi-d',
+  BUNGALOW: 'bungalow',
+  TOWNHOUSE: 'townhouse',
+  STUDIO: 'studio',
+};
+
+const SORT_OPTIONS = {
+  RECOMMENDED: 'recommended',
+  PRICE_LOW: 'price_low',
+  PRICE_HIGH: 'price_high',
+  NEWEST: 'newest',
+};
+
+// Merge data
+const properties = baseProperties.map(p => ({
+  ...p,
+  image: p.images?.[0] || '', // Convert images array to single image
+  beds: extractBeds(p.details),
+  baths: extractBaths(p.details), // You'll need to implement this
+  sqft: extractSqft(p.details),   // You'll need to implement this
+  type: extractType(p.details),
+  coords: getCoordinates(p.description), // You'll need to implement this
+  featured: Math.random() > 0.5
+}));
 
 export default function HouseRental() {
   const [showMap, setShowMap] = useState(false);
@@ -178,9 +118,9 @@ export default function HouseRental() {
         .join(" ").toLowerCase().includes(query.toLowerCase());
       const matchesPrice = (
         priceRange === 'any' ||
-        (priceRange === 'lt2k' && price < 200000) ||
-        (priceRange === '2to4' && price >= 200000 && price <= 400000) ||
-        (priceRange === 'gt4' && price > 400000)
+        (priceRange === 'lt2k' && price < 2000) ||
+        (priceRange === '2to4' && price >= 2000 && price <= 4000) ||
+        (priceRange === 'gt4' && price > 4000)
       );
       const matchesBeds = p.beds >= (minBeds || 0);
       const matchesType = typeFilter === 'any' || (p.type || '').toLowerCase() === typeFilter;
